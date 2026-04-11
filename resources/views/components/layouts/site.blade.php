@@ -147,8 +147,8 @@
 
                     $mapValue = $footerContact?->map_embed;
                     $mapUrl = null;
-                    $defaultLatitude = '-0.8986429786920755';
-                    $defaultLongitude = '100.364262';
+                    $defaultLatitude = '-6.187111571220787';
+                    $defaultLongitude = '106.81524925582019';
                     $defaultMapLinkUrl = 'https://www.google.com/maps?q=' . $defaultLatitude . ',' . $defaultLongitude;
                     $defaultMapEmbedUrl = 'https://maps.google.com/maps?q=' . $defaultLatitude . ',' . $defaultLongitude . '&z=15&output=embed';
 
