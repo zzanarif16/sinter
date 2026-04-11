@@ -1,11 +1,13 @@
 <x-layouts.site :title="'Inspiration - Sumatera Interior'">
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 class="font-display text-4xl font-bold text-slate-900">Inspiration</h1>
-        <p class="mt-3 max-w-2xl text-slate-600">Koleksi ide desain yang bisa menjadi referensi sebelum memilih produk interior.</p>
+    <section class="page-section">
+        <div class="page-header">
+            <h1 class="page-title">Inspiration</h1>
+            <p class="page-subtitle">Koleksi ide desain yang bisa menjadi referensi sebelum memilih produk interior.</p>
+        </div>
 
-        <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             @forelse ($inspirations as $inspiration)
-            <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <article class="surface-card p-6">
                 @if ($inspiration->image_url)
                 <img src="{{ $inspiration->image_url }}" alt="{{ $inspiration->title }}" class="mb-4 h-48 w-full rounded-xl object-cover">
                 @endif

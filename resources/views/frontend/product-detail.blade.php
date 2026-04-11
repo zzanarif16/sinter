@@ -1,8 +1,8 @@
 <x-layouts.site :title="$product->name . ' - Product Detail'">
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="page-section">
         <a href="{{ route('products') }}" class="mb-6 inline-flex text-sm font-semibold text-sky-700 hover:text-sky-900">&larr; Kembali ke Product</a>
 
-        <article class="grid gap-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2 lg:p-8">
+        <article class="surface-card grid gap-8 p-6 lg:grid-cols-2 lg:p-8">
             <div>
                 @if ($product->image_url)
                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-80 w-full rounded-2xl object-cover lg:h-[28rem]">
@@ -13,7 +13,7 @@
 
             <div>
                 <p class="text-xs font-semibold tracking-wide text-sky-700">{{ $product->family }} / {{ $sections[$product->section] ?? $product->section }}</p>
-                <h1 class="mt-2 font-display text-3xl font-bold text-slate-900">{{ $product->name }}</h1>
+                <h1 class="mt-2 page-title text-3xl sm:text-4xl">{{ $product->name }}</h1>
 
                 @if ($product->price)
                 <p class="mt-4 text-2xl font-bold text-sky-900">Rp {{ number_format((float) $product->price, 0, ',', '.') }}</p>
@@ -34,7 +34,7 @@
             <h2 class="font-display text-2xl font-bold text-slate-900">Produk Terkait</h2>
             <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 @foreach ($relatedProducts as $item)
-                <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <article class="surface-card p-4">
                     @if ($item->image_url)
                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="mb-3 h-36 w-full rounded-xl object-cover">
                     @endif

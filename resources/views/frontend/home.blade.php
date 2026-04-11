@@ -16,7 +16,7 @@
         </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="page-section pb-8">
         <div class="mb-8 flex items-end justify-between">
             <h2 class="font-display text-2xl font-bold text-sky-900">Featured Product</h2>
             <a href="{{ route('products') }}" class="text-sm font-semibold text-sky-700">Lihat semua</a>
@@ -33,7 +33,7 @@
         </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <section class="page-section pt-6">
         <div class="mb-8 flex items-end justify-between">
             <h2 class="font-display text-2xl font-bold text-sky-900">Inspiration</h2>
             <a href="{{ route('inspirations') }}" class="text-sm font-semibold text-sky-700">Lihat Selengkapnya</a>
@@ -42,7 +42,7 @@
         @if ($featuredInspirations->isNotEmpty())
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($featuredInspirations as $inspiration)
-            <article class="rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+            <article class="surface-card p-4">
                 @if ($inspiration->image_url)
                 <img src="{{ $inspiration->image_url }}" alt="{{ $inspiration->title }}" class="mb-4 h-48 w-full rounded-xl object-cover">
                 @endif
@@ -52,7 +52,7 @@
             @endforeach
         </div>
         @else
-        <div class="rounded-2xl border border-sky-100 bg-white p-6 text-slate-600 shadow-sm">
+        <div class="surface-card p-6 text-slate-600">
             Belum ada inspiration. Tambahkan dari admin panel.
         </div>
         @endif
