@@ -30,6 +30,14 @@ class ProductsTable
                 TextColumn::make('price')
                     ->money('IDR')
                     ->sortable(),
+                TextColumn::make('sub_images')
+                    ->label('Sub Foto')
+                    ->badge()
+                    ->formatStateUsing(function (mixed $state): string {
+                        $count = is_array($state) ? count(array_filter($state)) : 0;
+
+                        return (string) $count;
+                    }),
                 IconColumn::make('is_featured')
                     ->boolean(),
                 TextColumn::make('sort_order')

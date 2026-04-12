@@ -53,7 +53,7 @@
         </div>
         @else
         <div class="surface-card p-6 text-slate-600">
-            Belum ada inspiration. Tambahkan dari admin panel.
+            Belum ada inspiration.
         </div>
         @endif
     </section>

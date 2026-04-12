@@ -34,12 +34,26 @@ class ProductForm
                 TextInput::make('price')
                     ->numeric(),
                 FileUpload::make('image')
-                    ->label('Image')
+                    ->label('Foto Utama')
                     ->disk('public')
                     ->directory('products')
                     ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                     ->imageEditor()
+                    ->fetchFileInformation(false)
                     ->visibility('public'),
+                FileUpload::make('sub_images')
+                    ->label('Sub Foto (Maksimal 5)')
+                    ->disk('public')
+                    ->directory('products/sub')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                    ->multiple()
+                    ->maxFiles(5)
+                    ->reorderable()
+                    ->appendFiles()
+                    ->fetchFileInformation(false)
+                    ->visibility('public')
+                    ->columnSpanFull(),
                 TextInput::make('sort_order')
                     ->numeric()
                     ->default(0),

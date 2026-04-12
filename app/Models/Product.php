@@ -57,6 +57,7 @@ class Product extends Model
         'description',
         'price',
         'image',
+        'sub_images',
         'is_featured',
         'sort_order',
     ];
@@ -66,20 +67,23 @@ class Product extends Model
         return [
             'is_featured' => 'boolean',
             'price' => 'decimal:2',
+            'sub_images' => 'array',
         ];
     }
 
     public function getImageUrlAttribute(): ?string
     {
-        if (blank($this->image)) {
-            return null;
-        }
+        return self::resolveImageUrl($this->image);
+    }
 
-        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
-            return $this->image;
-        }
-
-        return asset('storage/' . ltrim($this->image, '/'));
+    public function getGalleryImageUrlsAttribute(): array
+    {
+        return collect($this->sub_images ?? [])
+            ->take(5)
+            ->map(fn($path): ?string => self::resolveImageUrl($path))
+            ->filter()
+            ->values()
+            ->all();
     }
 
     protected static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
@@ -98,5 +102,18 @@ class Product extends Model
         }
 
         return $slug;
+    }
+
+    protected static function resolveImageUrl(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return asset('storage/' . ltrim($path, '/'));
     }
 }
