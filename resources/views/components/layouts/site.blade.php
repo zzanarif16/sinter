@@ -42,7 +42,7 @@
     @endphp
 
     <div class="flex min-h-screen flex-col">
-        <header class="sticky top-0 z-50 border-b border-sky-100/80 bg-white/90 backdrop-blur">
+        <header class="site-navbar sticky top-0 z-50 border-b backdrop-blur" data-site-navbar>
             <nav class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8" aria-label="Main navigation">
                 <div class="flex items-center justify-between gap-4">
                     <a href="{{ route('home') }}" class="font-display text-lg font-bold tracking-tight text-sky-900 sm:text-xl">Sumatera Interior</a>
@@ -145,20 +145,12 @@
                     $whatsappDigits = $whatsappValue ? preg_replace('/[^0-9]/', '', $whatsappValue) : null;
                     $whatsappUrl = blank($whatsappDigits) ? null : 'https://wa.me/' . $whatsappDigits;
 
-                    $mapValue = $footerContact?->map_embed;
-                    $mapUrl = null;
-                    $defaultLatitude = '-6.187111571220787';
-                    $defaultLongitude = '106.81524925582019';
-                    $defaultMapLinkUrl = 'https://www.google.com/maps?q=' . $defaultLatitude . ',' . $defaultLongitude;
-                    $defaultMapEmbedUrl = 'https://maps.google.com/maps?q=' . $defaultLatitude . ',' . $defaultLongitude . '&z=15&output=embed';
-
-                    if (!blank($mapValue)) {
-                    if (preg_match('/src=["\']([^"\']+)["\']/', $mapValue, $matches)) {
-                    $mapUrl = $matches[1];
-                    } elseif (str_starts_with($mapValue, 'http://') || str_starts_with($mapValue, 'https://')) {
-                    $mapUrl = $mapValue;
-                    }
-                    }
+                    $mapLatitude = '-6.1871448';
+                    $mapLongitude = '106.81454';
+                    $mapCoordinates = $mapLatitude . ',' . $mapLongitude;
+                    $mapLinkUrl = 'https://maps.app.goo.gl/aeiY6Y2ZbCtjVkkN8';
+                    $mapEmbedQuery = 'Sumatera Interior Decoration,' . $mapCoordinates;
+                    $mapEmbedUrl = 'https://www.google.com/maps?hl=id&z=19&output=embed&q=' . urlencode($mapEmbedQuery);
                     @endphp
 
                     <p class="font-semibold text-slate-800">Contact</p>
@@ -232,7 +224,7 @@
                     <p class="mb-3 font-semibold text-slate-800">Lokasi Kami</p>
                     <div class="overflow-hidden rounded-xl border border-sky-100 shadow-sm">
                         <iframe
-                            src="{{ $defaultMapEmbedUrl }}"
+                            src="{{ $mapEmbedUrl }}"
                             width="100%"
                             height="220"
                             style="border:0;"
@@ -242,7 +234,7 @@
                             title="Google Maps Sumatera Interior">
                         </iframe>
                     </div>
-                    <a href="{{ $mapUrl ?: $defaultMapLinkUrl }}" target="_blank" rel="noopener" class="mt-3 inline-flex rounded-full bg-sky-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-sky-800">Buka di Maps</a>
+                    <a href="{{ $mapLinkUrl }}" target="_blank" rel="noopener" class="mt-3 inline-flex rounded-full bg-sky-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-sky-800">Buka di Maps</a>
                 </div>
 
             </div>

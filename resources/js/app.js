@@ -1,5 +1,23 @@
 import "./bootstrap";
 
+function initNavbarScrollOpacity() {
+    const navbar = document.querySelector("[data-site-navbar]");
+
+    if (!navbar) {
+        return;
+    }
+
+    const updateScrolledState = () => {
+        navbar.classList.toggle("is-scrolled", window.scrollY > 16);
+    };
+
+    updateScrolledState();
+
+    window.addEventListener("scroll", updateScrolledState, {
+        passive: true,
+    });
+}
+
 function initMobileNavbar() {
     const toggleButton = document.querySelector("[data-nav-toggle]");
     const mobileNavRoot = document.querySelector("[data-mobile-nav-root]");
@@ -83,8 +101,13 @@ function initMobileNavbar() {
     });
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileNavbar);
-} else {
+function initSiteUi() {
+    initNavbarScrollOpacity();
     initMobileNavbar();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSiteUi);
+} else {
+    initSiteUi();
 }

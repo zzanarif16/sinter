@@ -34,7 +34,19 @@ class ProductsTable
                     ->label('Sub Foto')
                     ->badge()
                     ->formatStateUsing(function (mixed $state): string {
-                        $count = is_array($state) ? count(array_filter($state)) : 0;
+                        $count = collect($state ?? [])
+                            ->filter(function (mixed $item): bool {
+                                if (is_string($item)) {
+                                    return filled($item);
+                                }
+
+                                if (is_array($item)) {
+                                    return filled($item['image'] ?? $item['path'] ?? null);
+                                }
+
+                                return false;
+                            })
+                            ->count();
 
                         return (string) $count;
                     }),

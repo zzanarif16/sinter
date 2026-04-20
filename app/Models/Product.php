@@ -76,11 +76,47 @@ class Product extends Model
         return self::resolveImageUrl($this->image);
     }
 
-    public function getGalleryImageUrlsAttribute(): array
+    public function getGalleryItemsAttribute(): array
     {
         return collect($this->sub_images ?? [])
-            ->take(5)
-            ->map(fn($path): ?string => self::resolveImageUrl($path))
+            ->take(25)
+            ->map(function (mixed $item): ?array {
+                if (is_string($item)) {
+                    $url = self::resolveImageUrl($item);
+
+                    return $url ? [
+                        'image_url' => $url,
+                        'detail' => null,
+                    ] : null;
+                }
+
+                if (! is_array($item)) {
+                    return null;
+                }
+
+                $path = $item['image'] ?? $item['path'] ?? null;
+                $url = is_string($path) ? self::resolveImageUrl($path) : null;
+
+                if (! $url) {
+                    return null;
+                }
+
+                $detail = $item['detail'] ?? $item['caption'] ?? null;
+
+                return [
+                    'image_url' => $url,
+                    'detail' => is_string($detail) && trim($detail) !== '' ? trim($detail) : null,
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    public function getGalleryImageUrlsAttribute(): array
+    {
+        return collect($this->gallery_items)
+            ->pluck('image_url')
             ->filter()
             ->values()
             ->all();

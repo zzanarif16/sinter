@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products\Schemas;
 
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -42,17 +43,77 @@ class ProductForm
                     ->imageEditor()
                     ->fetchFileInformation(false)
                     ->visibility('public'),
-                FileUpload::make('sub_images')
-                    ->label('Sub Foto (Maksimal 5)')
-                    ->disk('public')
-                    ->directory('products/sub')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
-                    ->multiple()
-                    ->maxFiles(5)
+                Repeater::make('sub_images')
+                    ->label('Sub Foto (Maksimal 25)')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->label('Foto Sub')
+                            ->disk('public')
+                            ->directory('products/sub')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                            ->image()
+                            ->imageEditor()
+                            ->required()
+                            ->fetchFileInformation(false)
+                            ->visibility('public'),
+                        TextInput::make('detail')
+                            ->label('Detail Singkat')
+                            ->maxLength(120)
+                            ->placeholder('Contoh: Tekstur linen warna krem, cocok untuk ruang tamu minimalis.'),
+                    ])
+                    ->afterStateHydrated(function (Repeater $component, mixed $state): void {
+                        $normalizedState = collect($state ?? [])
+                            ->map(function (mixed $item): ?array {
+                                if (is_string($item)) {
+                                    return ['image' => $item, 'detail' => null];
+                                }
+
+                                if (! is_array($item)) {
+                                    return null;
+                                }
+
+                                $image = $item['image'] ?? $item['path'] ?? null;
+
+                                if (! filled($image)) {
+                                    return null;
+                                }
+
+                                return [
+                                    'image' => $image,
+                                    'detail' => $item['detail'] ?? $item['caption'] ?? null,
+                                ];
+                            })
+                            ->filter()
+                            ->values()
+                            ->all();
+
+                        $component->state($normalizedState);
+                    })
+                    ->dehydrateStateUsing(fn(?array $state): array => collect($state ?? [])
+                        ->map(function (mixed $item): ?array {
+                            if (! is_array($item)) {
+                                return null;
+                            }
+
+                            $image = $item['image'] ?? null;
+
+                            if (! filled($image)) {
+                                return null;
+                            }
+
+                            return [
+                                'image' => $image,
+                                'detail' => filled($item['detail'] ?? null) ? trim((string) $item['detail']) : null,
+                            ];
+                        })
+                        ->filter()
+                        ->take(25)
+                        ->values()
+                        ->all())
+                    ->addActionLabel('Tambah Sub Foto')
                     ->reorderable()
-                    ->appendFiles()
-                    ->fetchFileInformation(false)
-                    ->visibility('public')
+                    ->maxItems(25)
+                    ->defaultItems(0)
                     ->columnSpanFull(),
                 TextInput::make('sort_order')
                     ->numeric()
