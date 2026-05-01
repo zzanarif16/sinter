@@ -29,6 +29,7 @@ class Inspiration extends Model
         'summary',
         'content',
         'image',
+        'sub_images',
         'is_featured',
     ];
 
@@ -36,20 +37,59 @@ class Inspiration extends Model
     {
         return [
             'is_featured' => 'boolean',
+            'sub_images' => 'array',
         ];
     }
 
     public function getImageUrlAttribute(): ?string
     {
-        if (blank($this->image)) {
-            return null;
-        }
+        return self::resolveImageUrl($this->image);
+    }
 
-        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
-            return $this->image;
-        }
+    public function getGalleryItemsAttribute(): array
+    {
+        return collect($this->sub_images ?? [])
+            ->take(10)
+            ->map(function (mixed $item): ?array {
+                if (is_string($item)) {
+                    $url = self::resolveImageUrl($item);
 
-        return asset('storage/' . ltrim($this->image, '/'));
+                    return $url ? [
+                        'image_url' => $url,
+                        'detail' => null,
+                    ] : null;
+                }
+
+                if (! is_array($item)) {
+                    return null;
+                }
+
+                $path = $item['image'] ?? $item['path'] ?? null;
+                $url = is_string($path) ? self::resolveImageUrl($path) : null;
+
+                if (! $url) {
+                    return null;
+                }
+
+                $detail = $item['detail'] ?? $item['caption'] ?? null;
+
+                return [
+                    'image_url' => $url,
+                    'detail' => is_string($detail) && trim($detail) !== '' ? trim($detail) : null,
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    public function getGalleryImageUrlsAttribute(): array
+    {
+        return collect($this->gallery_items)
+            ->pluck('image_url')
+            ->filter()
+            ->values()
+            ->all();
     }
 
     protected static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
@@ -68,5 +108,18 @@ class Inspiration extends Model
         }
 
         return $slug;
+    }
+
+    protected static function resolveImageUrl(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return asset('storage/' . ltrim($path, '/'));
     }
 }

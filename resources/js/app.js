@@ -46,7 +46,7 @@ function initMobileNavbar() {
         toggleButton.setAttribute("aria-expanded", "false");
         document.body.classList.remove("overflow-hidden");
         mobileBackdrop.classList.add("opacity-0");
-        mobileDrawer.classList.add("translate-x-full");
+        mobileDrawer.classList.add("-translate-x-full");
         document.removeEventListener("keydown", onEscapeKey);
 
         window.setTimeout(() => {
@@ -67,7 +67,7 @@ function initMobileNavbar() {
         toggleButton.setAttribute("aria-expanded", "true");
         requestAnimationFrame(() => {
             mobileBackdrop.classList.remove("opacity-0");
-            mobileDrawer.classList.remove("translate-x-full");
+            mobileDrawer.classList.remove("-translate-x-full");
         });
         document.addEventListener("keydown", onEscapeKey);
     };

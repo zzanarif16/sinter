@@ -347,6 +347,11 @@
             opacity 0.32s ease;
     }
 
+    .detail-main-visual.detail-main-visual--contain img {
+        object-fit: contain;
+        background: #fff;
+    }
+
     .detail-main-visual.is-swapping img {
         opacity: 0.35;
         transform: scale(1.04);

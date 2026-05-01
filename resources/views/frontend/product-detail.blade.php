@@ -96,7 +96,7 @@
                 <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">{{ $product->short_description ?: 'Produk premium interior untuk kebutuhan hunian maupun komersial.' }}</p>
 
                 @if ($product->description)
-                <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-700">
+                <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-4 text-justify text-sm leading-7 text-slate-700">
                     {!! nl2br(e($product->description)) !!}
                 </div>
                 @endif

@@ -44,9 +44,7 @@
     <div class="flex min-h-screen flex-col">
         <header class="site-navbar sticky top-0 z-50 border-b backdrop-blur" data-site-navbar>
             <nav class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8" aria-label="Main navigation">
-                <div class="flex items-center justify-between gap-4">
-                    <a href="{{ route('home') }}" class="font-display text-lg font-bold tracking-tight text-sky-900 sm:text-xl">Sumatera Interior</a>
-
+                <div class="flex items-center gap-4">
                     <button
                         type="button"
                         class="inline-flex items-center justify-center rounded-xl border border-sky-200 p-2 text-sky-800 transition hover:bg-sky-50 md:hidden"
@@ -59,7 +57,9 @@
                         </svg>
                     </button>
 
-                    <div class="hidden items-center gap-1 text-sm font-semibold text-slate-700 md:flex md:gap-2">
+                    <a href="{{ route('home') }}" class="font-display text-lg font-bold tracking-tight text-sky-900 sm:text-xl">Sumatera Interior</a>
+
+                    <div class="ml-auto hidden items-center gap-1 text-sm font-semibold text-slate-700 md:flex md:gap-2">
                         @foreach ($navigationItems as $item)
                         <a
                             href="{{ $item['url'] }}"
@@ -88,7 +88,7 @@
 
             <aside
                 id="mobile-nav-drawer"
-                class="mobile-drawer absolute right-0 top-0 flex h-full w-[82vw] max-w-sm translate-x-full flex-col border-l border-sky-100 bg-white shadow-2xl transition-transform duration-300"
+                class="mobile-drawer absolute left-0 top-0 flex h-full w-[82vw] max-w-sm -translate-x-full flex-col border-r border-sky-100 bg-white shadow-2xl transition-transform duration-300"
                 role="dialog"
                 aria-modal="true"
                 aria-label="Menu navigasi mobile"
@@ -148,9 +148,8 @@
                     $mapLatitude = '-6.1871448';
                     $mapLongitude = '106.81454';
                     $mapCoordinates = $mapLatitude . ',' . $mapLongitude;
-                    $mapLinkUrl = 'https://maps.app.goo.gl/aeiY6Y2ZbCtjVkkN8';
-                    $mapEmbedQuery = 'Sumatera Interior Decoration,' . $mapCoordinates;
-                    $mapEmbedUrl = 'https://www.google.com/maps?hl=id&z=19&output=embed&q=' . urlencode($mapEmbedQuery);
+                    $mapLinkUrl = 'https://www.google.com/maps/place/Sumatera+Interior+Decoration/@-6.1871448,106.81454,21z/data=!4m6!3m5!1s0x2e69f708171134d5:0x679e2d3b791c2073!8m2!3d-6.1872024!4d106.8147009!16s%2Fg%2F11yv9p5n4f?entry=ttu&g_ep=EgoyMDI2MDQyOC4wIKXMDSoASAFQAw%3D%3D';
+                    $mapEmbedUrl = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d247.91114425232195!2d106.81454!3d-6.1871448!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f708171134d5%3A0x679e2d3b791c2073!2sSumatera%20Interior%20Decoration!5e0!3m2!1sid!2sid!4v1777645700598!5m2!1sid!2sid';
                     @endphp
 
                     <p class="font-semibold text-slate-800">Contact</p>
@@ -238,7 +237,7 @@
                 </div>
 
             </div>
-            <div class="py-4 text-xs text-slate-600 lg:text-center border-t border-sky-100">
+            <div class="border-t border-sky-100 px-4 py-4 text-center text-xs text-slate-600">
                 <p>Copyright {{ now()->year }} Sumatera Interior</p>
             </div>
         </footer>
